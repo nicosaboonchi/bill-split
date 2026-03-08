@@ -49,82 +49,170 @@ export default function Home() {
   };
 
   return (
-    <main className="max-w-2xl mx-auto p-4">
-      <h1>Guests</h1>
-      <div className="flex gap-2 mb-4">
-        <input
-          type="text"
-          placeholder="Enter guest name"
-          value={iName}
-          onChange={(e) => setIName(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && addGuest()}
-        />
-        <button onClick={addGuest}>Add Guest</button>
-      </div>
-      <div>
-        {people.map((person, index) => (
-          <div key={index}>
+    <main className="min-h-screen bg-amber-50 py-10 px-4 flex justify-center">
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-6 border-b-2 border-dashed border-amber-200 pb-6">
+          <h1 className="text-3xl font-bold text-rose-900 tracking-wide">
+            The Tab
+          </h1>
+          <p className="text-xs text-amber-700 tracking-widest uppercase mt-1">
+            ✦ Bill Splitter ✦
+          </p>
+        </div>
+
+        {/* Guests */}
+        <section className="mb-6">
+          <p className="text-xs tracking-widest uppercase text-amber-600 mb-3">
+            — Guests —
+          </p>
+          <div className="flex gap-2 mb-3">
+            <input
+              className="flex-1 bg-amber-50 border border-amber-200 rounded px-3 py-2 text-sm font-mono text-stone-800 placeholder-amber-300 focus:outline-none focus:border-rose-800"
+              type="text"
+              placeholder="Guest name..."
+              value={iName}
+              onChange={(e) => setIName(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addGuest()}
+            />
             <button
-              onClick={() =>
-                setPeople((prev) => prev.filter((_, i) => i !== index))
-              }
+              className="bg-rose-900 text-white text-sm font-mono px-4 py-2 rounded hover:bg-rose-800 transition"
+              onClick={addGuest}
             >
-              {person} x
+              + Add
             </button>
           </div>
-        ))}
-      </div>
+          <div className="flex flex-wrap gap-2">
+            {people.map((person, index) => (
+              <span
+                key={index}
+                className="flex items-center gap-1 bg-amber-100 border border-amber-200 rounded-full px-3 py-1 text-sm font-mono text-stone-700"
+              >
+                {person}
+                <button
+                  onClick={() =>
+                    setPeople((prev) => prev.filter((_, i) => i !== index))
+                  }
+                  className="text-amber-400 hover:text-rose-800 ml-1"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        </section>
 
-      {/* Items */}
-      <h1>Items</h1>
-      <div className="flex gap-2 mb-4">
-        <input
-          type="text"
-          placeholder="Enter item name"
-          value={iItem}
-          onChange={(e) => setIItem(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Enter item price"
-          value={iPrice}
-          onChange={(e) => setIPrice(e.target.value)}
-        />
-        <button onClick={addItem}>Add Item</button>
-      </div>
-      <div>
-        {items.map((item, index) => (
-          <div key={index}>
+        <div className="border-t-2 border-dashed border-amber-200 my-4" />
+
+        {/* Items */}
+        <section className="mb-6">
+          <p className="text-xs tracking-widest uppercase text-amber-600 mb-3">
+            — Items —
+          </p>
+          <div className="flex gap-2 mb-3">
+            <input
+              className="flex-1 bg-amber-50 border border-amber-200 rounded px-3 py-2 text-sm font-mono text-stone-800 placeholder-amber-300 focus:outline-none focus:border-rose-800"
+              type="text"
+              placeholder="Item name..."
+              value={iItem}
+              onChange={(e) => setIItem(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addItem()}
+            />
+            <input
+              className="w-24 bg-amber-50 border border-amber-200 rounded px-3 py-2 text-sm font-mono text-stone-800 placeholder-amber-300 focus:outline-none focus:border-rose-800"
+              type="number"
+              placeholder="$0.00"
+              min="0"
+              step="0.01"
+              value={iPrice}
+              onChange={(e) => setIPrice(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addItem()}
+            />
             <button
-              onClick={() =>
-                setItems((prev) => prev.filter((_, i) => i !== index))
-              }
+              className="bg-rose-900 text-white text-sm font-mono px-4 py-2 rounded hover:bg-rose-800 transition"
+              onClick={addItem}
             >
-              {item.name} - ${item.price.toFixed(2)} x
+              +
             </button>
           </div>
-        ))}
-      </div>
+          {items.length > 0 && (
+            <div className="space-y-1">
+              {items.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between items-center font-mono text-sm text-stone-700 py-1"
+                >
+                  <span>{item.name}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="font-bold">${item.price.toFixed(2)}</span>
+                    <button
+                      onClick={() =>
+                        setItems((prev) => prev.filter((_, i) => i !== index))
+                      }
+                      className="text-amber-400 hover:text-rose-800"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
 
-      {/* Tax and tip */}
-      <h1>Tax and Tip</h1>
-      <div className="flex gap-2 mb-4">
-        <input
-          type="number"
-          inputMode="decimal"
-          placeholder="Enter Tax %"
-          value={iTax}
-          onChange={(e) => setITax(e.target.value)}
-        />
-        <input
-          type="number"
-          inputMode="decimal"
-          placeholder="Enter Tip Amnt"
-          value={iTip}
-          onChange={(e) => setITip(e.target.value)}
-        />
+        <div className="border-t-2 border-dashed border-amber-200 my-4" />
+
+        {/* Tax & Tip */}
+        <section className="mb-6">
+          <p className="text-xs tracking-widest uppercase text-amber-600 mb-3">
+            — Tax & Tip —
+          </p>
+          <div className="flex gap-2">
+            <input
+              className="flex-1 bg-amber-50 border border-amber-200 rounded px-3 py-2 text-sm font-mono text-stone-800 placeholder-amber-300 focus:outline-none focus:border-rose-800"
+              type="number"
+              inputMode="decimal"
+              placeholder="Tax %"
+              min="0"
+              step="0.01"
+              value={iTax}
+              onChange={(e) => setITax(e.target.value)}
+            />
+            <input
+              className="flex-1 bg-amber-50 border border-amber-200 rounded px-3 py-2 text-sm font-mono text-stone-800 placeholder-amber-300 focus:outline-none focus:border-rose-800"
+              type="number"
+              inputMode="decimal"
+              placeholder="Tip ($)"
+              min="0"
+              step="0.01"
+              value={iTip}
+              onChange={(e) => setITip(e.target.value)}
+            />
+          </div>
+        </section>
+
+        {/* Create button */}
+        <button
+          onClick={createBill}
+          disabled={people.length === 0 || items.length === 0}
+          className="w-full bg-rose-900 text-white font-mono text-sm tracking-widest uppercase py-3 rounded hover:bg-rose-800 transition disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          ✦ Generate Shareable Bill
+        </button>
+
+        {(people.length === 0 || items.length === 0) && (
+          <p className="text-center font-mono text-xs text-amber-400 mt-2">
+            Add at least one guest and one item to continue
+          </p>
+        )}
+
+        {/* Footer */}
+        <div className="text-center mt-8 border-t-2 border-dashed border-amber-200 pt-4">
+          <p className="text-xs font-mono tracking-widest text-amber-400 uppercase">
+            ✦ thank you ✦
+          </p>
+        </div>
       </div>
-      <button onClick={createBill}>Create Bill</button>
     </main>
   );
 }

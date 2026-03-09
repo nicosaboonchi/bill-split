@@ -12,7 +12,7 @@ export default function BillPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const [claims, setClaims] = useState<Record<string, string>>({});
+  const [claims, setClaims] = useState<Record<string, string[]>>({});
   const [bill, setBill] = useState<Bill | null>(null);
   const [me, setMe] = useState<string>("");
 
@@ -21,7 +21,13 @@ export default function BillPage({
       const snap = await getDoc(doc(db, "bills", id));
       const data = snap.data() as Bill;
       if (snap.exists()) {
-        setClaims(data.claims);
+        // normalize: old bills stored claims as strings, new ones as arrays
+        const raw = data.claims ?? {};
+        const normalized: Record<string, string[]> = {};
+        for (const [k, v] of Object.entries(raw)) {
+          normalized[k] = Array.isArray(v) ? v : [v as string];
+        }
+        setClaims(normalized);
         setBill(data);
       }
     };
@@ -30,11 +36,16 @@ export default function BillPage({
 
   const handleClaim = async (idx: number) => {
     if (!me) return;
+    const key = String(idx);
+    const current = claims[key] ?? [];
+    const updated = current.includes(me)
+      ? current.filter((p) => p !== me)
+      : [...current, me];
     const newClaims = { ...claims };
-    if (claims[idx] === me) {
-      delete newClaims[idx];
+    if (updated.length === 0) {
+      delete newClaims[key];
     } else {
-      newClaims[idx] = me;
+      newClaims[key] = updated;
     }
     setClaims(newClaims);
     await updateDoc(doc(db, "bills", id), { claims: newClaims });
@@ -47,10 +58,14 @@ export default function BillPage({
     const tipPerPerson = bill.tip / bill.people.length;
 
     const subs: Record<string, number> = {};
-    bill.people.forEach((p) => (subs[p] = 0));
+    bill.people.forEach((person) => (subs[person] = 0));
     bill.items.forEach((item, idx) => {
-      const claimer = claims[idx];
-      if (claimer && claimer in subs) subs[claimer] += item.price;
+      const claimers = claims[String(idx)] ?? [];
+      if (claimers.length === 0) return;
+      const share = item.price / claimers.length;
+      claimers.forEach((claimer) => {
+        if (claimer in subs) subs[claimer] += share;
+      });
     });
 
     return bill.people.map((person) => {
@@ -81,7 +96,7 @@ export default function BillPage({
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-6 border-b-2 border-dashed border-amber-200 pb-6">
-          <h1 className="text-3xl font-bold text-rose-900 tracking-wide">
+          <h1 className="text-4xl font-bold text-rose-900 tracking-wide font-sans italic">
             The Tab
           </h1>
           <p className="text-xs text-amber-700 tracking-widest uppercase mt-1">
@@ -131,39 +146,44 @@ export default function BillPage({
           </p>
           <div className="space-y-1">
             {bill.items.map((item, idx) => {
-              const owner = claims[idx];
-              const isMine = owner === me;
-              const isOther = !!owner && owner !== me;
+              const claimers = claims[String(idx)] ?? [];
+              const isMine = claimers.includes(me);
+              const isClaimed = claimers.length > 0;
+              const myShare = isMine ? item.price / claimers.length : null;
               return (
                 <div
                   key={idx}
                   onClick={() => me && handleClaim(idx)}
                   className={`flex items-center gap-3 p-2 rounded transition cursor-pointer
-                    ${isMine ? "bg-rose-50" : isOther ? "bg-green-50" : "hover:bg-amber-100"}
+                    ${isMine ? "bg-rose-50" : isClaimed ? "bg-green-50" : "hover:bg-amber-100"}
                     ${!me ? "cursor-default" : ""}
                   `}
                 >
                   <div
-                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center text-xs flex-shrink-0
-                      ${isMine ? "bg-rose-900 border-rose-900 text-white" : isOther ? "bg-green-700 border-green-700 text-white" : "border-amber-300"}
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center text-xs shrink-0
+                      ${isMine ? "bg-rose-900 border-rose-900 text-white" : isClaimed ? "bg-green-700 border-green-700 text-white" : "border-amber-300"}
                     `}
                   >
-                    {(isMine || isOther) && "✓"}
+                    {(isMine || isClaimed) && "✓"}
                   </div>
                   <div className="flex-1">
                     <span className="font-mono text-sm text-stone-800">
                       {item.name}
                     </span>
-                    {isOther && (
+                    {isClaimed && (
                       <span className="block font-mono text-xs text-green-700">
-                        {owner}
+                        {claimers.join(", ")}
+                        {claimers.length > 1 &&
+                          ` · $${(item.price / claimers.length).toFixed(2)} each`}
                       </span>
                     )}
                   </div>
                   <span
-                    className={`font-mono text-sm font-bold ${isMine ? "text-rose-900" : isOther ? "text-green-700" : "text-stone-700"}`}
+                    className={`font-mono text-sm font-bold ${isMine ? "text-rose-900" : isClaimed ? "text-green-700" : "text-stone-700"}`}
                   >
-                    ${item.price.toFixed(2)}
+                    {myShare !== null
+                      ? `$${myShare.toFixed(2)}`
+                      : `$${item.price.toFixed(2)}`}
                   </span>
                 </div>
               );
@@ -174,7 +194,12 @@ export default function BillPage({
             <span
               className={`font-mono text-xs px-2 py-1 rounded-full ${Object.keys(claims).length === bill.items.length ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-600"}`}
             >
-              {Object.keys(claims).length}/{bill.items.length} claimed
+              {
+                bill.items.filter(
+                  (_, i) => (claims[String(i)]?.length ?? 0) > 0,
+                ).length
+              }
+              /{bill.items.length} claimed
             </span>
           </div>
         </section>

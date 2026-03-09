@@ -8,7 +8,7 @@ export interface Bill {
   items: Item[];
   tax: number;
   tip: number;
-  claims: Record<string, string>;
+  claims: Record<string, string[]>;
 }
 
 export interface PersonTotal {

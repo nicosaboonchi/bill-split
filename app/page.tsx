@@ -53,7 +53,7 @@ export default function Home() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-6 border-b-2 border-dashed border-amber-200 pb-6">
-          <h1 className="text-3xl font-bold text-rose-900 tracking-wide">
+          <h1 className="text-4xl font-bold text-rose-900 tracking-wide font-sans italic">
             The Tab
           </h1>
           <p className="text-xs text-amber-700 tracking-widest uppercase mt-1">

@@ -17,3 +17,24 @@ export interface PersonTotal {
   tipShare: number;
   total: number;
 }
+
+// // {
+//     guests: {
+//         uuid: {
+//             name
+//         }
+//         uuid2: {
+//             name: name,
+
+//         }
+//     },
+//     items: {
+//         item uuid: {
+//             item,
+//             price
+//             assignto: [guest uuid]
+//         }
+//     },
+//     tax,
+//     tip
+// }

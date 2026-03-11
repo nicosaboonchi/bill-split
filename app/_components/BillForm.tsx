@@ -40,6 +40,7 @@ export function BillForm() {
         itemName: itemName,
         price: price,
         claimedBy: [],
+        createdAt: Date.now(),
       },
     }));
   };

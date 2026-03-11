@@ -7,10 +7,10 @@ export function GuestList({ guests, onGuestRemove }: GuestListProps) {
   return (
     <>
       {Object.entries(guests).map(([id, guest]) => (
-        <div key={id}>
-          {guest.name}
-          <button onClick={() => onGuestRemove(id)}>&times;</button>
-        </div>
+        <button key={id} onClick={() => onGuestRemove(id)}>
+          <span>{guest.name}</span>
+          <span>&times;</span>
+        </button>
       ))}
     </>
   );

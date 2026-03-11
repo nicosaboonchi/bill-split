@@ -1,0 +1,23 @@
+type TaxTipProps = {
+  tax: string;
+  tip: string;
+  onTaxChange: (value: string) => void;
+  onTipChange: (value: string) => void;
+};
+
+export function TaxTip({ tax, tip, onTaxChange, onTipChange }: TaxTipProps) {
+  return (
+    <div className="flex gap-4">
+      <input
+        value={tax}
+        onChange={(e) => onTaxChange(e.target.value)}
+        placeholder="Tax"
+      />
+      <input
+        value={tip}
+        onChange={(e) => onTipChange(e.target.value)}
+        placeholder="Tip"
+      />
+    </div>
+  );
+}

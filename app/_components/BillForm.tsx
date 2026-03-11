@@ -5,6 +5,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AddGuest } from "./AddGuest";
 import { GuestList } from "./GuestList";
+import { AddItem } from "./AddItem";
+import { ItemList } from "./ItemList";
+import { TaxTip } from "./TaxTip";
 
 export function BillForm() {
   const [guests, setGuests] = useState<Record<string, { name: string }>>({});
@@ -49,13 +52,22 @@ export function BillForm() {
   };
 
   async function handleSubmit() {
+    setError("");
+    if (Object.keys(guests).length === 0) {
+      setError("Please add at least one guest.");
+      return;
+    }
+    if (Object.keys(items).length === 0) {
+      setError("Please add at least one item.");
+      return;
+    }
     try {
       setLoading(true);
       const docRef = await addDoc(collection(db, "sessions"), {
         guests: guests,
         items: items,
-        tax: tax,
-        tip: tip,
+        tax: parseFloat(tax) || 0,
+        tip: parseFloat(tip) || 0,
       });
       router.push(`/bill/${docRef.id}`);
     } catch (error) {
@@ -66,9 +78,16 @@ export function BillForm() {
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <AddGuest onGuestAdd={addGuest} />
       <GuestList guests={guests} onGuestRemove={removeGuest} />
-    </>
+      <AddItem onItemAdd={addItem} />
+      <ItemList items={items} onItemRemove={removeItem} />
+      <TaxTip tax={tax} tip={tip} onTaxChange={setTax} onTipChange={setTip} />
+      <button onClick={handleSubmit} disabled={loading}>
+        {loading ? "Creating..." : "Create Bill"}
+      </button>
+      {error && <p className="text-red-500">{error}</p>}
+    </div>
   );
 }

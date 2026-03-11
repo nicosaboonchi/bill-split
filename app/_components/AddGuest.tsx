@@ -16,7 +16,7 @@ export function AddGuest({ onGuestAdd }: AddGuestProps) {
   };
 
   return (
-    <>
+    <div className="flex gap-2">
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -25,6 +25,6 @@ export function AddGuest({ onGuestAdd }: AddGuestProps) {
       />
 
       <button onClick={handleClick}>+</button>
-    </>
+    </div>
   );
 }

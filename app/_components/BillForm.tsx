@@ -9,6 +9,9 @@ import { AddItem } from "./AddItem";
 import { ItemList } from "./ItemList";
 import { TaxTip } from "./TaxTip";
 
+// TODO: Consider refactoring guests and items from objects to arrays
+// to preserve insertion order naturally and simplify rendering logic
+
 export function BillForm() {
   const [guests, setGuests] = useState<Record<string, { name: string }>>({});
   const [items, setItems] = useState<

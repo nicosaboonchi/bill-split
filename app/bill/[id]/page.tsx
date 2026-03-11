@@ -59,11 +59,16 @@ export default function BillPage({
     }
   };
 
+  const subtotal = Object.values(items).reduce((total, item) => {
+    if (item.claimedBy.includes(currentUser)) {
+      total += item.price / item.claimedBy.length;
+    }
+    return total;
+  }, 0);
+
   const sortedItems = Object.entries(items).sort(
     ([, a], [, b]) => a.createdAt - b.createdAt,
   );
-
-  console.log(sortedItems);
 
   if (!currentUser) {
     return <GuestSelector guests={guests} onGuestSelect={setCurrentUser} />;

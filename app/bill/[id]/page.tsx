@@ -11,6 +11,7 @@ import { useEffect, useState, use } from "react";
 import { GuestSelector } from "./_components/GuestSelector";
 import { ItemSelector } from "./_components/ItemSelector";
 import { GuestSummary } from "./_components/GuestSummary";
+import { Item, Guest, Bill } from "@/lib/types";
 
 export default function BillPage({
   params,
@@ -19,30 +20,28 @@ export default function BillPage({
 }) {
   const { id } = use(params);
 
-  const [guests, setGuests] = useState<Record<string, { name: string }>>({});
-  const [items, setItems] = useState<
-    Record<
-      string,
-      {
-        itemName: string;
-        price: number;
-        claimedBy: string[];
-        createdAt: number;
-      }
-    >
-  >({});
+  const [guests, setGuests] = useState<Record<string, Guest>>({});
+  const [items, setItems] = useState<Record<string, Item>>({});
   const [tax, setTax] = useState(0);
   const [tip, setTip] = useState(0);
   const [currentUser, setCurrentUser] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "sessions", id), (snapshot) => {
-      if (!snapshot.exists()) return;
-      const { guests, items, tip, tax } = snapshot.data();
+      if (!snapshot.exists()) {
+        setLoading(false);
+        setError("Bill not found");
+        return;
+      }
+
+      const { guests, items, tip, tax } = snapshot.data() as Bill;
       setGuests(guests);
       setItems(items);
       setTax(tax);
       setTip(tip);
+      setLoading(false);
     });
     return unsubscribe;
   }, [id]);
@@ -64,6 +63,14 @@ export default function BillPage({
     ([, a], [, b]) => a.createdAt - b.createdAt,
   );
 
+  if (loading) {
+    return <p>Creating your bill...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   if (!currentUser) {
     return <GuestSelector guests={guests} onGuestSelect={setCurrentUser} />;
   }
@@ -80,7 +87,13 @@ export default function BillPage({
         onItemSelect={handleClaim}
         currentUser={currentUser}
       />
-      <GuestSummary items={items} guests={guests} tax={tax} tip={tip} />
+      <GuestSummary
+        items={items}
+        guests={guests}
+        tax={tax}
+        tip={tip}
+        currentUser={currentUser}
+      />
     </main>
   );
 }

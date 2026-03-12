@@ -5,9 +5,16 @@ interface GuestSummaryProps {
   guests: Record<string, Guest>;
   tax: number;
   tip: number;
+  currentUser: string;
 }
 
-export function GuestSummary({ items, guests, tax, tip }: GuestSummaryProps) {
+export function GuestSummary({
+  items,
+  guests,
+  tax,
+  tip,
+  currentUser,
+}: GuestSummaryProps) {
   const guestTabs = Object.entries(guests).reduce(
     (acc, [guestId, guest]) => {
       if (!acc[guestId]) {
@@ -39,7 +46,10 @@ export function GuestSummary({ items, guests, tax, tip }: GuestSummaryProps) {
       <h2 className="text-xl font-bold mb-4">Guest Summary</h2>
       <div className="space-y-4">
         {Object.entries(guestTabs).map(([guestId, summary]) => (
-          <div key={guestId} className="border p-3 rounded">
+          <div
+            key={guestId}
+            className={`border p-3 rounded ${guestId === currentUser ? "bg-green-500" : ""}`}
+          >
             <h3 className="text-lg font-semibold">{guests[guestId].name}</h3>
             <p>Subtotal: ${summary.subtotal.toFixed(2)}</p>
             <p>Tax: ${summary.tax.toFixed(2)}</p>

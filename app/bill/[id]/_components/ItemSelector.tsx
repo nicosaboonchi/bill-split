@@ -1,10 +1,9 @@
+import { Guest, Item } from "@/lib/types";
+
 type ItemSelectorProps = {
-  items: [
-    string,
-    { itemName: string; price: number; claimedBy: string[]; createdAt: number },
-  ][];
+  items: Item[];
   onItemSelect: (id: string) => void;
-  guests: Record<string, { name: string }>;
+  guests: Guest[];
   currentUser: string;
 };
 
@@ -16,10 +15,10 @@ export function ItemSelector({
 }: ItemSelectorProps) {
   return (
     <div className="flex flex-col gap-4">
-      {items.map(([id, item]) => (
+      {items.map((item) => (
         <button
-          key={id}
-          onClick={() => onItemSelect(id)}
+          key={item.id}
+          onClick={() => onItemSelect(item.id)}
           className={item.claimedBy.includes(currentUser) ? "bg-green-500" : ""}
         >
           <span>
@@ -27,7 +26,11 @@ export function ItemSelector({
           </span>
           <span>
             claimed by{" "}
-            {item.claimedBy.map((guestId) => guests[guestId].name).join(", ")}
+            {item.claimedBy
+              .map(
+                (guestId) => guests.find((guest) => guest.id === guestId)?.name,
+              )
+              .join(", ")}
           </span>
         </button>
       ))}

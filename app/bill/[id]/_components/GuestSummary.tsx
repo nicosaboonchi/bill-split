@@ -1,8 +1,9 @@
 import { Item, Guest } from "@/lib/types";
+import { calculateGuestTabs } from "@/utils/calculateGuestTabs";
 
 interface GuestSummaryProps {
-  items: Record<string, Item>;
-  guests: Record<string, Guest>;
+  items: Item[];
+  guests: Guest[];
   tax: number;
   tip: number;
   currentUser: string;
@@ -15,46 +16,24 @@ export function GuestSummary({
   tip,
   currentUser,
 }: GuestSummaryProps) {
-  const guestTabs = Object.entries(guests).reduce(
-    (acc, [guestId, guest]) => {
-      if (!acc[guestId]) {
-        acc[guestId] = { subtotal: 0, tax: 0, tip: 0, total: 0 };
-      }
-
-      Object.entries(items).forEach(([itemId, item]) => {
-        if (item.claimedBy.includes(guestId)) {
-          const itemCost = item.price / item.claimedBy.length;
-          acc[guestId].subtotal += itemCost;
-        }
-      });
-
-      acc[guestId].tax = (acc[guestId].subtotal / 100) * tax;
-      acc[guestId].tip = tip / Object.keys(guests).length;
-      acc[guestId].total =
-        acc[guestId].subtotal + acc[guestId].tax + acc[guestId].tip;
-
-      return acc;
-    },
-    {} as Record<
-      string,
-      { subtotal: number; tax: number; tip: number; total: number }
-    >,
-  );
+  const guestTabs = calculateGuestTabs({ items, guests, tax, tip });
 
   return (
     <div className="rounded-lg shadow p-4">
       <h2 className="text-xl font-bold mb-4">Guest Summary</h2>
       <div className="space-y-4">
-        {Object.entries(guestTabs).map(([guestId, summary]) => (
+        {guestTabs.map(({ id, subtotal, tax, tip, total }) => (
           <div
-            key={guestId}
-            className={`border p-3 rounded ${guestId === currentUser ? "bg-green-500" : ""}`}
+            key={id}
+            className={`border p-3 rounded ${id === currentUser ? "bg-green-500" : ""}`}
           >
-            <h3 className="text-lg font-semibold">{guests[guestId].name}</h3>
-            <p>Subtotal: ${summary.subtotal.toFixed(2)}</p>
-            <p>Tax: ${summary.tax.toFixed(2)}</p>
-            <p>Tip: ${summary.tip.toFixed(2)}</p>
-            <p className="font-bold">Total: ${summary.total.toFixed(2)}</p>
+            <h3 className="text-lg font-semibold">
+              {guests.find((guest) => guest.id === id)?.name}
+            </h3>
+            <p>Subtotal: ${subtotal.toFixed(2)}</p>
+            <p>Tax: ${tax.toFixed(2)}</p>
+            <p>Tip: ${tip.toFixed(2)}</p>
+            <p className="font-bold">Total: ${total.toFixed(2)}</p>
           </div>
         ))}
       </div>

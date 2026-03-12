@@ -1,15 +1,17 @@
+import { Item } from "@/lib/types";
+
 type ItemListProps = {
-  items: Record<string, { itemName: string; price: number }>;
+  items: Item[];
   onItemRemove: (id: string) => void;
 };
 
 export function ItemList({ items, onItemRemove }: ItemListProps) {
   return (
     <>
-      {Object.entries(items).map(([id, { itemName, price }]) => (
-        <button key={id} onClick={() => onItemRemove(id)}>
+      {items.map((item) => (
+        <button key={item.id} onClick={() => onItemRemove(item.id)}>
           <span>
-            {itemName} - ${price.toFixed(2)}
+            {item.itemName} - ${item.price.toFixed(2)}
           </span>
           <span>&times;</span>
         </button>

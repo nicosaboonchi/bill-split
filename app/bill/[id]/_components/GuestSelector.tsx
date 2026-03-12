@@ -1,13 +1,15 @@
+import { Guest } from "@/lib/types";
+
 type GuestSelectorProps = {
-  guests: Record<string, { name: string }>;
+  guests: Guest[];
   onGuestSelect: (id: string) => void;
 };
 
 export function GuestSelector({ guests, onGuestSelect }: GuestSelectorProps) {
   return (
     <>
-      {Object.entries(guests).map(([id, guest]) => (
-        <button key={id} onClick={() => onGuestSelect(id)}>
+      {guests.map((guest) => (
+        <button key={guest.id} onClick={() => onGuestSelect(guest.id)}>
           <span>{guest.name}</span>
         </button>
       ))}

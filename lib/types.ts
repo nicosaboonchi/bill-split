@@ -1,17 +1,26 @@
 export type Item = {
+  id: string;
   claimedBy: string[];
-  createdAt: number;
   itemName: string;
   price: number;
 };
 
 export type Guest = {
+  id: string;
   name: string;
 };
 
 export type Bill = {
-  guests: Record<string, Guest>;
-  items: Record<string, Item>;
+  guests: Guest[];
+  items: Item[];
   tax: number;
   tip: number;
+};
+
+type Tab = {
+  id: string;
+  subtotal: number;
+  tax: number;
+  tip: number;
+  total: number;
 };

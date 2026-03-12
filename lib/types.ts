@@ -1,40 +1,17 @@
-export interface Item {
-  name: string;
+export type Item = {
+  claimedBy: string[];
+  createdAt: number;
+  itemName: string;
   price: number;
-}
+};
 
-export interface Bill {
-  people: string[];
-  items: Item[];
+export type Guest = {
+  name: string;
+};
+
+export type Bill = {
+  guests: Record<string, Guest>;
+  items: Record<string, Item>;
   tax: number;
   tip: number;
-  claims: Record<string, string[]>;
-}
-
-export interface PersonTotal {
-  sub: number;
-  taxShare: number;
-  tipShare: number;
-  total: number;
-}
-
-// // {
-//     guests: {
-//         uuid: {
-//             name
-//         }
-//         uuid2: {
-//             name: name,
-
-//         }
-//     },
-//     items: {
-//         item uuid: {
-//             item,
-//             price
-//             assignto: [guest uuid]
-//         }
-//     },
-//     tax,
-//     tip
-// }
+};

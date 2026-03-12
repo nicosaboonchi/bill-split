@@ -10,6 +10,7 @@ import { db } from "@/lib/firebase";
 import { useEffect, useState, use } from "react";
 import { GuestSelector } from "./_components/GuestSelector";
 import { ItemSelector } from "./_components/ItemSelector";
+import { GuestSummary } from "./_components/GuestSummary";
 
 export default function BillPage({
   params,
@@ -59,13 +60,6 @@ export default function BillPage({
     }
   };
 
-  const subtotal = Object.values(items).reduce((total, item) => {
-    if (item.claimedBy.includes(currentUser)) {
-      total += item.price / item.claimedBy.length;
-    }
-    return total;
-  }, 0);
-
   const sortedItems = Object.entries(items).sort(
     ([, a], [, b]) => a.createdAt - b.createdAt,
   );
@@ -86,6 +80,7 @@ export default function BillPage({
         onItemSelect={handleClaim}
         currentUser={currentUser}
       />
+      <GuestSummary items={items} guests={guests} tax={tax} tip={tip} />
     </main>
   );
 }

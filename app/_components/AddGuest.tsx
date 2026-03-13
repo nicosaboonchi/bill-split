@@ -1,5 +1,8 @@
 "use client";
 import { useState } from "react";
+import { Button } from "../../components/ui/Button";
+import { PlusIcon } from "lucide-react";
+import { Input } from "../../components/ui/Input";
 
 type AddGuestProps = {
   onGuestAdd: (name: string) => void;
@@ -16,15 +19,19 @@ export function AddGuest({ onGuestAdd }: AddGuestProps) {
   };
 
   return (
-    <div className="flex gap-2">
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleClick()}
-        placeholder="Enter guest name"
-      />
+    <div>
+      <div className="flex gap-4">
+        <Input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleClick()}
+          placeholder="Guest Name..."
+        />
 
-      <button onClick={handleClick}>+</button>
+        <Button onClick={handleClick}>
+          <PlusIcon />
+        </Button>
+      </div>
     </div>
   );
 }

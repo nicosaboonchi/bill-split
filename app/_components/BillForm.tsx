@@ -5,6 +5,7 @@ import { AddItem } from "./AddItem";
 import { ItemList } from "./ItemList";
 import { TaxTip } from "./TaxTip";
 import { useBillForm } from "../_hooks/useBillForm";
+import { Button } from "../../components/ui/Button";
 export function BillForm() {
   const {
     addGuest,
@@ -24,6 +25,7 @@ export function BillForm() {
 
   return (
     <div className="flex flex-col gap-4">
+      <p>- Party -</p>
       <AddGuest onGuestAdd={addGuest} />
       <GuestList guests={guests} onGuestRemove={removeGuest} />
       <AddItem onItemAdd={addItem} />
@@ -34,9 +36,9 @@ export function BillForm() {
         onTaxChange={updateTax}
         onTipChange={updateTip}
       />
-      <button onClick={handleSubmit} disabled={loading}>
+      <Button onClick={handleSubmit} disabled={loading}>
         {loading ? "Creating..." : "Create Bill"}
-      </button>
+      </Button>
       {error && <p className="text-red-500">{error}</p>}
     </div>
   );

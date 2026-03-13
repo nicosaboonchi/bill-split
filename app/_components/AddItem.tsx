@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Button } from "../../components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
 type AddItemProps = {
   onItemAdd: (itemName: string, price: number) => void;
@@ -17,19 +19,18 @@ export function AddItem({ onItemAdd }: AddItemProps) {
 
   return (
     <div className="flex gap-2">
-      <input
+      <Input
         value={itemName}
         onChange={(e) => setItemName(e.target.value)}
         placeholder="Item Name"
       />
-      <input
+      <Input
         value={price}
         type="number"
         onChange={(e) => setPrice(e.target.value)}
         placeholder="$0.00"
-        className="w-24"
       />
-      <button onClick={handleClick}>+</button>
+      <Button onClick={handleClick}>+</Button>
     </div>
   );
 }

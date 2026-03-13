@@ -1,3 +1,5 @@
+import { Input } from "@/components/ui/Input";
+
 type TaxTipProps = {
   tax: string;
   tip: string;
@@ -7,13 +9,13 @@ type TaxTipProps = {
 
 export function TaxTip({ tax, tip, onTaxChange, onTipChange }: TaxTipProps) {
   return (
-    <div className="flex gap-4">
-      <input
+    <div>
+      <Input
         value={tax}
         onChange={(e) => onTaxChange(e.target.value)}
         placeholder="Tax"
       />
-      <input
+      <Input
         value={tip}
         onChange={(e) => onTipChange(e.target.value)}
         placeholder="Tip"

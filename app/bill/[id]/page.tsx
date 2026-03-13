@@ -5,6 +5,7 @@ import { ItemSelector } from "./_components/ItemSelector";
 import { GuestSummary } from "./_components/GuestSummary";
 import { BillTotal } from "./_components/BillTotal";
 import { useBillSession } from "./_hooks/useBillSession";
+import { ShareBill } from "./_components/ShareBill";
 
 export default function BillPage({
   params,
@@ -53,6 +54,7 @@ export default function BillPage({
         currentUser={currentUser}
       />
       <BillTotal items={items} tax={tax} tip={tip} />
+      <ShareBill />
     </main>
   );
 }

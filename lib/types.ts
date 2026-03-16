@@ -1,19 +1,26 @@
-export interface Item {
-  name: string;
+export type Item = {
+  id: string;
+  claimedBy: string[];
+  itemName: string;
   price: number;
-}
+};
 
-export interface Bill {
-  people: string[];
+export type Guest = {
+  id: string;
+  name: string;
+};
+
+export type Bill = {
+  guests: Guest[];
   items: Item[];
   tax: number;
   tip: number;
-  claims: Record<string, string[]>;
-}
+};
 
-export interface PersonTotal {
-  sub: number;
-  taxShare: number;
-  tipShare: number;
+type Tab = {
+  id: string;
+  subtotal: number;
+  tax: number;
+  tip: number;
   total: number;
-}
+};

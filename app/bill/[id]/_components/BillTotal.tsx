@@ -11,25 +11,22 @@ export function BillTotal({ items, tax, tip }: BillTotalProps) {
   const billSummary = calculateBillTotal({ items, tax, tip });
 
   return (
-    <div className="rounded-lg shadow p-4">
-      <h2 className="text-xl font-bold mb-4">Bill Total</h2>
-      <div className="space-y-1">
-        <div className="flex justify-between">
-          <span>Subtotal</span>
-          <span>${billSummary.subtotal.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Tax ({tax}%)</span>
-          <span>${billSummary.tax.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Tip</span>
-          <span>${billSummary.tip.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between font-bold border-t pt-2 mt-2">
-          <span>Total</span>
-          <span>${billSummary.total.toFixed(2)}</span>
-        </div>
+    <div className="flex flex-col gap-1 text-sm">
+      <div className="flex justify-between border-b border-dotted border-stone-300 pb-1">
+        <span className="text-stone-500">Subtotal</span>
+        <span>${billSummary.subtotal.toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between border-b border-dotted border-stone-300 pb-1">
+        <span className="text-stone-500">Tax ({tax}%)</span>
+        <span>${billSummary.tax.toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between border-b border-dotted border-stone-300 pb-1">
+        <span className="text-stone-500">Tip</span>
+        <span>${billSummary.tip.toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between font-bold pt-1">
+        <span>Total</span>
+        <span>${billSummary.total.toFixed(2)}</span>
       </div>
     </div>
   );

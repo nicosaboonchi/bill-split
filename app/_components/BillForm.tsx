@@ -7,6 +7,7 @@ import { TaxTip } from "./TaxTip";
 import { useBillForm } from "../_hooks/useBillForm";
 import { Button } from "../../components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
+
 export function BillForm() {
   const {
     addGuest,
@@ -25,23 +26,34 @@ export function BillForm() {
   } = useBillForm();
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <p>- Party -</p>
+        <AddGuest onGuestAdd={addGuest} />
+        <GuestList guests={guests} onGuestRemove={removeGuest} />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <p>- Items -</p>
+        <AddItem onItemAdd={addItem} />
+        <ItemList items={items} onItemRemove={removeItem} />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <p>- Tax & Tip -</p>
+        <TaxTip
+          tax={tax}
+          tip={tip}
+          onTaxChange={updateTax}
+          onTipChange={updateTip}
+        />
+      </div>
+
       <Separator />
-      <p>- Party -</p>
-      <AddGuest onGuestAdd={addGuest} />
-      <GuestList guests={guests} onGuestRemove={removeGuest} />
-      <p>- Items -</p>
-      <AddItem onItemAdd={addItem} />
-      <ItemList items={items} onItemRemove={removeItem} />
-      <p>- Tax & Tip -</p>
-      <TaxTip
-        tax={tax}
-        tip={tip}
-        onTaxChange={updateTax}
-        onTipChange={updateTip}
-      />
-      <Separator />
-      <Button onClick={handleSubmit} disabled={loading}>
+      <Button
+        onClick={handleSubmit}
+        disabled={loading || guests.length === 0 || items.length === 0}
+      >
         {loading ? "Creating..." : "Create Bill"}
       </Button>
       {error && <p className="text-red-500">{error}</p>}

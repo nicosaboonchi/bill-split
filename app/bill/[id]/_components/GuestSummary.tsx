@@ -19,24 +19,39 @@ export function GuestSummary({
   const guestTabs = calculateGuestTabs({ items, guests, tax, tip });
 
   return (
-    <div className="rounded-lg shadow p-4">
-      <h2 className="text-xl font-bold mb-4">Guest Summary</h2>
-      <div className="space-y-4">
-        {guestTabs.map(({ id, subtotal, tax, tip, total }) => (
+    <div className="flex flex-col gap-3">
+      {guestTabs.map(({ id, subtotal, tax, tip, total }) => {
+        const isMe = id === currentUser;
+        return (
           <div
             key={id}
-            className={`border p-3 rounded ${id === currentUser ? "bg-green-500" : ""}`}
+            className={`flex flex-col gap-1 text-sm border-b border-dotted border-stone-300 pb-3 ${
+              isMe ? "font-medium" : ""
+            }`}
           >
-            <h3 className="text-lg font-semibold">
+            <p className="text-xs uppercase tracking-wide text-stone-500">
               {guests.find((guest) => guest.id === id)?.name}
-            </h3>
-            <p>Subtotal: ${subtotal.toFixed(2)}</p>
-            <p>Tax: ${tax.toFixed(2)}</p>
-            <p>Tip: ${tip.toFixed(2)}</p>
-            <p className="font-bold">Total: ${total.toFixed(2)}</p>
+              {isMe ? " (you)" : ""}
+            </p>
+            <div className="flex justify-between">
+              <span className="text-stone-500">Subtotal</span>
+              <span>${subtotal.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-stone-500">Tax</span>
+              <span>${tax.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-stone-500">Tip</span>
+              <span>${tip.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between font-bold">
+              <span>Total</span>
+              <span>${total.toFixed(2)}</span>
+            </div>
           </div>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 }

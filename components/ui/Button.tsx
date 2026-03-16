@@ -1,12 +1,11 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
 const buttonVariants = cva(
-  "cursor-pointer rounded-md [&_svg]:size-4 [&_svg]:shrink-0",
+  "cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0 bg-rose-900 hover:bg-rose-900/80 disabled:hover:bg-rose-900",
   {
     variants: {
       variant: {
-        action: "bg-red-400/40 text-white hover:bg-blue-600",
-        item: "bg-gray-500 text-white hover:bg-gray-600",
+        action: "text-white hover:bg-red-500 rounded-md",
         destructive: "bg-red-500 text-white hover:bg-red-600",
       },
       size: {

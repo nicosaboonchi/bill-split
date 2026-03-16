@@ -1,7 +1,10 @@
 export function Header() {
   return (
-    <header className="mb-6">
-      <h1 className="text-3xl font-bold text-center">The Tab</h1>
+    <header className="flex flex-col items-center gap-1">
+      <p className="text-xs tracking-wide text-stone-400 uppercase">
+        ✦ Bill Splitter ✦
+      </p>
+      <h1 className="text-3xl font-bold tracking-widest uppercase">The Tab</h1>
     </header>
   );
 }

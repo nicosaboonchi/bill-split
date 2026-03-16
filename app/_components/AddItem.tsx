@@ -31,7 +31,18 @@ export function AddItem({ onItemAdd }: AddItemProps) {
           <Input
             value={price}
             type="number"
-            onChange={(e) => setPrice(e.target.value)}
+            min={0}
+            step="0.01"
+            onChange={(e) => {
+              const value = e.target.value;
+              if (parseFloat(value) < 0) return;
+              setPrice(value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleClick();
+              if (e.key === "e" || e.key === "E") e.preventDefault();
+              if (e.key === "-" || e.key === "+") e.preventDefault();
+            }}
             placeholder="0.00"
           />
         </div>

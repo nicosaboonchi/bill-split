@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Button } from "@/components/ui/Button";
+
 export function ShareBill() {
   const [copied, setCopied] = useState(false);
 
@@ -8,11 +10,8 @@ export function ShareBill() {
   };
 
   return (
-    <button
-      onClick={handleCopy}
-      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-    >
+    <Button onClick={handleCopy}>
       {copied ? "Link Copied!" : "Share Bill"}
-    </button>
+    </Button>
   );
 }

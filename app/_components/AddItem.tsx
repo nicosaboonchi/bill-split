@@ -33,6 +33,7 @@ export function AddItem({ onItemAdd }: AddItemProps) {
             type="number"
             min={0}
             step="0.01"
+            inputMode="decimal"
             onChange={(e) => {
               const value = e.target.value;
               if (parseFloat(value) < 0) return;

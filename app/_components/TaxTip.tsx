@@ -16,6 +16,7 @@ export function TaxTip({ tax, tip, onTaxChange, onTipChange }: TaxTipProps) {
         <div className="flex items-center gap-2">
           <Input
             value={tax}
+            inputMode="decimal"
             onChange={(e) => onTaxChange(e.target.value)}
             placeholder="0"
             className="w-15 text-right"
@@ -29,6 +30,7 @@ export function TaxTip({ tax, tip, onTaxChange, onTipChange }: TaxTipProps) {
           <DollarSign className="size-4" />
           <Input
             value={tip}
+            inputMode="decimal"
             onChange={(e) => onTipChange(e.target.value)}
             placeholder="0.00"
             className="w-15 text-right"

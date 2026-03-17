@@ -13,7 +13,7 @@ export function TaxTip({ tax, tip, onTaxChange, onTipChange }: TaxTipProps) {
     <div className="flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <p>Tax</p>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Input
             value={tax}
             inputMode="decimal"
@@ -26,7 +26,7 @@ export function TaxTip({ tax, tip, onTaxChange, onTipChange }: TaxTipProps) {
       </div>
       <div className="flex justify-between items-center">
         <p>Tip</p>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <DollarSign className="size-4" />
           <Input
             value={tip}

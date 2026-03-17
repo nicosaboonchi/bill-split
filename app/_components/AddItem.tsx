@@ -24,6 +24,7 @@ export function AddItem({ onItemAdd }: AddItemProps) {
         value={itemName}
         onChange={(e) => setItemName(e.target.value)}
         placeholder="Item Name"
+        className="w-2xl"
       />
       <div className="flex justify-between gap-2">
         <div className="flex items-center">

@@ -26,8 +26,8 @@ export function ItemSelector({
           <Button
             key={item.id}
             onClick={() => onItemSelect(item.id)}
-            className={`flex flex-col py-1.5 px-2 text-sm text-left border-b border-dotted border-stone-300 hover:bg-yellow-100 transition-colors ${
-              isClaimed ? "bg-yellow-100" : ""
+            className={`flex flex-col py-3 px-2 text-sm text-left border-b border-dotted border-stone-300 hover:bg-rose-900/20 transition-colors ${
+              isClaimed ? "bg-rose-900/20" : ""
             }`}
           >
             <div className="flex justify-between w-full">

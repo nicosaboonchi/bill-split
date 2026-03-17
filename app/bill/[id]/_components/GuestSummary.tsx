@@ -25,8 +25,8 @@ export function GuestSummary({
         return (
           <div
             key={id}
-            className={`flex flex-col gap-1 text-sm border-b border-dotted border-stone-300 pb-3 ${
-              isMe ? "font-medium" : ""
+            className={`flex flex-col gap-1 text-sm border-b border-dotted border-stone-300 p-3 ${
+              isMe ? "font-medium bg-rose-900/20" : ""
             }`}
           >
             <p className="text-xs uppercase tracking-wide text-stone-500">

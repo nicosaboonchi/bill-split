@@ -7,6 +7,7 @@ import { TaxTip } from "./TaxTip";
 import { useBillForm } from "../_hooks/useBillForm";
 import { Button } from "../../components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
+import { BillTotal } from "../bill/[id]/_components/BillTotal";
 
 export function BillForm() {
   const {
@@ -50,6 +51,12 @@ export function BillForm() {
       </div>
 
       <Separator />
+      <p>- Total -</p>
+      <BillTotal
+        items={items}
+        tax={parseFloat(tax) || 0}
+        tip={parseFloat(tip) || 0}
+      />
       <Button
         onClick={handleSubmit}
         disabled={loading || guests.length === 0 || items.length === 0}

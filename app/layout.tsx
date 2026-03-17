@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, IBM_Plex_Mono } from "next/font/google";
+import { Playfair_Display, Courier_Prime } from "next/font/google";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -7,10 +7,10 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
-const ibmMono = IBM_Plex_Mono({
+const ibmMono = Courier_Prime({
   variable: "--font-ibm-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
